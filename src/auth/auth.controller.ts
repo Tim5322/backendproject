@@ -3,14 +3,14 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
-export class AuthController implements OnModuleInit {
+export class AuthController {
   constructor(private authService: AuthService) {}
 
-  async onModuleInit() {
-    // Maak standaard user aan bij opstarten
-    await this.authService.createDefaultUserIfNeeded();
-    console.log('Standaard user aangemaakt: docent@school.nl / wachtwoord123');
-  }
+//   async onModuleInit() {
+//     // Maak standaard user aan bij opstarten
+//     await this.authService.createDefaultUserIfNeeded();
+//     console.log('Standaard user aangemaakt: docent@school.nl / wachtwoord123');
+//   }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {

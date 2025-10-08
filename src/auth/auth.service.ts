@@ -31,7 +31,7 @@ export class AuthService {
     };
   }
 
-  async createDefaultUserIfNeeded() {
-    return this.usersService.createDefaultUser();
+//   async createDefaultUserIfNeeded() {
+//     return this.usersService.createDefaultUser();
   }
-}
+
