@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type keuzemoduleDocument = keuzemodule & Document;
 
-@Schema()
+@Schema({ collection: 'VKM' })
 export class keuzemodule{
     @Prop({ required: true })
     id: number;
