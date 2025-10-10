@@ -1,16 +1,16 @@
-import { Controller, Post, Body, OnModuleInit } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-//   async onModuleInit() {
-//     // Maak standaard user aan bij opstarten
-//     await this.authService.createDefaultUserIfNeeded();
-//     console.log('Standaard user aangemaakt: docent@school.nl / wachtwoord123');
-//   }
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
+  }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
