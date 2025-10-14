@@ -89,9 +89,7 @@ export class AuthService {
   }
 
   async addFavoriet(studentId: string, keuzemoduleId: number) {
-    console.log('addFavoriet called with studentId:', studentId, 'keuzemoduleId:', keuzemoduleId);
     const student = await this.studentModel.findById(studentId);
-    console.log('Student found:', !!student);
     if (!student) {
       throw new UnauthorizedException('Student niet gevonden');
     }
