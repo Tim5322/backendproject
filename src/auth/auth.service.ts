@@ -87,4 +87,47 @@ export class AuthService {
       }
     };
   }
+
+  async addFavoriet(studentId: string, keuzemoduleId: number) {
+    console.log('addFavoriet called with studentId:', studentId, 'keuzemoduleId:', keuzemoduleId);
+    const student = await this.studentModel.findById(studentId);
+    console.log('Student found:', !!student);
+    if (!student) {
+      throw new UnauthorizedException('Student niet gevonden');
+    }
+
+    if (student.favorieten.length >= 5) {
+      throw new ConflictException('Maximaal 5 favorieten toegestaan');
+    }
+
+    if (student.favorieten.includes(keuzemoduleId)) {
+      throw new ConflictException('Keuzemodule staat al in favorieten');
+    }
+
+    student.favorieten.push(keuzemoduleId);
+    await student.save();
+    
+    return { message: 'Favoriet toegevoegd', favorieten: student.favorieten };
+  }
+
+  async removeFavoriet(studentId: string, keuzemoduleId: number) {
+    const student = await this.studentModel.findById(studentId);
+    if (!student) {
+      throw new UnauthorizedException('Student niet gevonden');
+    }
+
+    student.favorieten = student.favorieten.filter(id => id !== keuzemoduleId);
+    await student.save();
+    
+    return { message: 'Favoriet verwijderd', favorieten: student.favorieten };
+  }
+
+  async getFavorieten(studentId: string) {
+    const student = await this.studentModel.findById(studentId);
+    if (!student) {
+      throw new UnauthorizedException('Student niet gevonden');
+    }
+    
+    return { favorieten: student.favorieten };
+  }
 }

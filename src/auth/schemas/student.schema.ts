@@ -20,8 +20,15 @@ export class Student {
   @Prop()
   opleiding?: string;
 
+  @Prop({ type: [Number], default: [], validate: [arrayLimit, 'Maximaal 5 favorieten toegestaan'] })
+  favorieten: number[];
+
   @Prop({ default: Date.now })
   createdAt: Date;
+}
+
+function arrayLimit(val: number[]) {
+  return val.length <= 5;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

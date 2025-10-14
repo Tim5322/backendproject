@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Student, StudentSchema } from './schemas/student.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { FavorietenController } from '../favorieten/favorieten.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, FavorietenController],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
