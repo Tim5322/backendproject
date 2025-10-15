@@ -4,20 +4,26 @@ import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { Student, StudentSchema } from './schemas/student.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { FavorietenController } from '../favorieten/favorieten.controller';
+import { PersistenceModule } from '../infrastructure/persistence/persistence.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Student.name, schema: StudentSchema }]),
+    ConfigModule,
+    PersistenceModule,
     PassportModule,
-    JwtModule.register({
-      secret: 'jouw-geheime-sleutel', // In productie via environment variable
-      signOptions: { expiresIn: '24h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const secret = configService.get<string>('JWT_SECRET');
+        if (!secret) throw new Error('JWT_SECRET is not defined in environment');
+        return { secret, signOptions: { expiresIn: '24h' } };
+      },
     }),
   ],
-  controllers: [AuthController, FavorietenController],
+  controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
