@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { keuzemodule, keuzemoduleDocument } from './schemas/keuzemodules.schema';
+import { KeuzemoduleRepository } from '../domain/ports/keuzemodule.repository';
+import { KeuzemoduleEntity } from '../domain/entities/keuzemodule.entity';
 
 @Injectable()
 export class KeuzemodulesService {
-    constructor(@InjectModel(keuzemodule.name) private readonly keuzemoduleModel: Model<keuzemoduleDocument>) {}
+  constructor(private readonly repo: KeuzemoduleRepository) {}
 
-      async findAll(): Promise<keuzemodule[]> {
-        return this.keuzemoduleModel.find().exec();
+      async findAll(): Promise<KeuzemoduleEntity[]> {
+        return this.repo.findAll();
       }
 
       async findByFilters(filters: {
@@ -16,22 +15,7 @@ export class KeuzemodulesService {
         studycredit?: number;
         level?: string;
         location?: string;
-      }): Promise<keuzemodule[]> {
-        const query: any = {};
-        
-        if (filters.name) {
-          query.name = { $regex: filters.name, $options: 'i' }; // Case-insensitive zoeken
-        }
-        if (filters.studycredit) {
-          query.studycredit = filters.studycredit;
-        }
-        if (filters.level) {
-          query.level = { $regex: filters.level, $options: 'i' };
-        }
-        if (filters.location) {
-          query.location = { $regex: filters.location, $options: 'i' };
-        }
-
-        return this.keuzemoduleModel.find(query).exec();
+      }): Promise<KeuzemoduleEntity[]> {
+        return this.repo.findByFilters(filters);
       }
 }

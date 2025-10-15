@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { KeuzemodulesController } from './keuzemodules.controller';
 import { KeuzemodulesService } from './keuzemodules.service';
-import { keuzemodule, keuzemoduleSchema } from './schemas/keuzemodules.schema';
+import { KeuzemoduleRepository } from '../domain/ports/keuzemodule.repository';
+import { PersistenceModule } from '../infrastructure/persistence/persistence.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: keuzemodule.name, schema: keuzemoduleSchema }])],
+  imports: [PersistenceModule],
   controllers: [KeuzemodulesController],
   providers: [KeuzemodulesService]
 })

@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ConfigService } from '@nestjs/config';
@@ -9,6 +10,8 @@ async function bootstrap() {
   
   // Global exception filter voor betere error responses
   app.useGlobalFilters(new AllExceptionsFilter());
+  // Global validation
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
   
   // CORS voor frontend communicatie
   app.enableCors({

@@ -14,7 +14,11 @@ export class Student {
   @Prop({ required: true })
   naam: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ 
+    required: true, 
+    unique: true,
+    match: [/^\d+$/, 'Studentnummer mag alleen cijfers bevatten']
+  })
   studentnummer: string;
 
   @Prop()
