@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CatsModule } from './cats/cats.module';
 import { AuthModule } from './auth/auth.module';
 import { KeuzemodulesModule } from './keuzemodules/keuzemodules.module';
 
@@ -15,7 +14,6 @@ import { KeuzemodulesModule } from './keuzemodules/keuzemodules.module';
       serverSelectionTimeoutMS: 5000, // 5 seconden timeout
       socketTimeoutMS: 45000, // 45 seconden voor queries
     }),
-    CatsModule,
     AuthModule,
     KeuzemodulesModule,
   ],
