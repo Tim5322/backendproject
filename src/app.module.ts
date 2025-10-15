@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PersistenceModule } from './infrastructure/persistence/persistence.module';
 import { AuthModule } from './auth/auth.module';
 import { KeuzemodulesModule } from './keuzemodules/keuzemodules.module';
+import { FavorietenModule } from './favorieten/favorieten.module';
 
 
 @Module({
@@ -18,7 +19,8 @@ import { KeuzemodulesModule } from './keuzemodules/keuzemodules.module';
     }),
   PersistenceModule,
   AuthModule,
-    KeuzemodulesModule,
+  KeuzemodulesModule,
+  FavorietenModule,
   ],
   controllers: [],
   providers: [],
