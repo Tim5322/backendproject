@@ -70,4 +70,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'KeuzeModuleAPI'
+          slot-name: 'Production'
           package: .
+          startup-command: 'npm run start:prod'
