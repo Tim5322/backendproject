@@ -36,7 +36,14 @@ export class AuthService {
 
     // Maak nieuwe student aan
     console.log('Creating student...');
-    const created = await this.studentRepository.create({ ...registerDto, password: hashedPassword });
+    let created;
+    try {
+      created = await this.studentRepository.create({ ...registerDto, password: hashedPassword });
+    } catch (err) {
+      // Log repository error details for Azure Log Stream
+      console.error('Error creating student in repository:', err);
+      throw err; // rethrow so global filter returns 500 as before
+    }
     const { password, ...result } = (created as any);
     console.log('Register complete for:', result.email);
     return result;
