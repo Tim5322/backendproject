@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - KeuzeModuleAPI
+name: Build and deploy NestJS API to Azure Web App - KeuzeModuleAPI
 
 on:
   push:
@@ -16,27 +16,31 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      # 1️⃣ Haal code op
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      # 2️⃣ Stel Node in
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
 
-      - name: Install and build
+      # 3️⃣ Installeer dependencies en build project
+      - name: Install dependencies and build
         run: |
-          npm install
+          npm ci
           npm run build
 
+      # 4️⃣ Upload artifact (enkel wat nodig is)
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: |
-            dist
+            dist/
             package.json
             package-lock.json
-            node_modules   # kan ook weggelaten worden als je Azure npm install laat doen
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,21 +50,24 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact
+      # 1️⃣ Download artifact naar root
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
+          path: .
 
-      - name: Login to Azure
+      # 2️⃣ Login bij Azure via OIDC (veilig, geen geheimen in GitHub)
+      - name: Azure login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8B4E37A78B784411893751C1C5FE7A94 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C5D6C7DF47734D57BC9C714CB401C21D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F222ABA7DDCA403DAF4F86497602A809 }}
 
+      # 3️⃣ Deploy naar Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'KeuzeModuleAPI'
-          slot-name: 'Production'
           package: .

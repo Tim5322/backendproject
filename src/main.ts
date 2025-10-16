@@ -18,8 +18,18 @@ async function bootstrap() {
     origin: [configService.get('VUE_APP_API_BASE_URL')!],
     credentials: true,
   });
-  
-  await app.listen(configService.get('PORT') || 3000);
-  console.log(`Backend draait op http://localhost:${configService.get('PORT') || 3000}`);
+
+  // Luister uitsluitend op de PORT env var (geen fallback)
+  const portStr = process.env.PORT;
+  if (!portStr) {
+    throw new Error('PORT environment variable is required');
+  }
+  const port = Number(portStr);
+  if (Number.isNaN(port)) {
+    throw new Error('PORT must be a number');
+  }
+
+  await app.listen(port);
+  console.log(`Backend draait op http://localhost:${port}`);
 }
 bootstrap();
