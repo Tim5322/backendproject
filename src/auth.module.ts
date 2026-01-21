@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthController } from '../interface/Controllers/auth.controller';
-import { AuthService } from '../interface/Services/auth.service';
-import { JwtStrategy } from '../interface/Strategies/jwt.strategy';
-import { PersistenceModule } from '../infrastructure/database/persistence.module';
+import { AuthController } from './interface/Controllers/auth.controller';
+import { AuthService } from './interface/Services/auth.service';
+import { JwtStrategy } from './interface/Strategies/jwt.strategy';
+import { PersistenceModule } from './infrastructure/database/persistence.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({

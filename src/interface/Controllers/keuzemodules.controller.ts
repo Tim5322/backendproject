@@ -8,17 +8,24 @@ export class KeuzemodulesController {
   constructor(private readonly keuzemoduleService: KeuzemodulesService) {}
 
   @Get()
-  findAll() {
-    return this.keuzemoduleService.findAll();
+  async findAll() {
+    return await this.keuzemoduleService.findAll();
   }
 
   @Get('search')
-  findByFilters(
+  async findByFilters(
     @Query('name') name?: string,
-    @Query('studycredit') studycredit?: number,
+    @Query('studycredit') studycredit?: string,
     @Query('level') level?: string,
     @Query('location') location?: string,
   ) {
-    return this.keuzemoduleService.findByFilters({ name, studycredit, level, location });
+    const filters: any = { name, level, location };
+    if (studycredit !== undefined && studycredit !== '') {
+      const parsed = parseInt(studycredit, 10);
+      if (!isNaN(parsed)) {
+        filters.studycredit = parsed;
+      }
+    }
+    return await this.keuzemoduleService.findByFilters(filters);
   }
 }
