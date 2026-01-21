@@ -4,8 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 // CatsModule was removed from the project; use PersistenceModule for infra providers
 import { PersistenceModule } from './infrastructure/database/persistence.module';
 import { AuthModule } from './auth.module';
-import { KeuzemodulesModule } from './keuzemodules/keuzemodules.module';
-import { FavorietenModule } from './favorieten/favorieten.module';
+import { KeuzemodulesModule } from './keuzemodules.module';
+import { FavorietenModule } from './favorieten.module';
 
 
 @Module({
